@@ -12,6 +12,13 @@ python3 -m venv venv
 pip install -r requirements.txt
 ```
 
+## Set the environment variables
+Example for development environment
+``` shell
+export APP_SETTINGS="config.DevelopmentConfig"
+export DATABASE_URL="sqlite:///database.db"
+```
+
 ## Initiate the database
 ``` shell
 python manage.py db init
