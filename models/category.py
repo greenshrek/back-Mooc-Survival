@@ -13,6 +13,7 @@ class CategoryModel(db.Model):
 
     def json(self):
         return {
+            "id": self.id,
             "category_name": self.name,
             "courses": [course.json() for course in self.courses.all()]
         }

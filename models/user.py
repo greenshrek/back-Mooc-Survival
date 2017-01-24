@@ -25,9 +25,10 @@ class UserModel(db.Model):
 
     def json(self):
         return {
+            "id": self.id,
             "username": self.username,
-            "courses": [course.json() for course in courses.all()],
-            "comments": [comment.json() for comment in comments.all()]
+            "courses": [course.json() for course in self.courses.all()],
+            "comments": [comment.json() for comment in self.comments.all()]
         }
 
     def save_to_db(self):
