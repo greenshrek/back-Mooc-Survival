@@ -26,10 +26,10 @@ def populatedb():
         'survive to megan fox',
         'Megan Fox want to perform a marathon of sex with you.\
         How could you prepare for this?',
-        1, 1)
+        user1, category)
     comment = CommentModel(
         'no one can survive to megan fox dumbass!',
-        1, 2)
+        course, user2)
     db.session.add(user1)
     db.session.add(user2)
     db.session.add(category)
