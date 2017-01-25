@@ -13,11 +13,15 @@ class CourseModel(db.Model):
 
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     author = db.relationship('UserModel',
-                             backref=db.backref('courses', lazy='dynamic'))
+                             backref=db.backref('courses',
+                                                cascade='all, delete-orphan',
+                                                lazy='dynamic'))
 
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     category = db.relationship('CategoryModel',
-                               backref=db.backref('courses', lazy='dynamic'))
+                               backref=db.backref('courses',
+                                                  cascade='all, delete-orphan',
+                                                  lazy='dynamic'))
 
     def __init__(self, title, content, author_id, category_id):
         self.title = title
@@ -43,11 +47,18 @@ class CourseModel(db.Model):
             "comments": [comment.json() for comment in self.comments.all()]
         }
 
-    def save_to_db(self):
+    def save(self):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
+    def update(self, **kwargs):
+        if kwargs['title']:
+            self.title = kwargs['title']
+        if kwargs['content']:
+            self.content = kwargs['content']
+        db.session.commit()
+
+    def delete(self):
         db.session.delete(self)
         db.session.commit()
 

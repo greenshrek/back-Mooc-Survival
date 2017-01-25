@@ -2,6 +2,49 @@ from flask_restful import Resource, reqparse
 from models.user import UserModel
 
 
+class User(Resource):
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('username')
+    parser.add_argument('email')
+
+    def get(self, user_id):
+        user = UserModel.find_by_id(user_id)
+
+        if user is None:
+            return {"message": "User not found."}, 404
+
+        return user.json(), 201
+
+    def put(self, user_id):
+        data = self.parser.parse_args()
+
+        user = UserModel.find_by_id(user_id)
+
+        if user is None:
+            return {"message": "User not found."}, 404
+
+        try:
+            user.update(**data)
+        except:
+            return {"message": "An error occured while updating User."}, 500
+
+        return user.json(), 200
+
+    def delete(self, user_id):
+        user = UserModel.find_by_id(user_id)
+
+        if user is None:
+            return {"message": "User not found."}, 404
+
+        try:
+            user.delete()
+        except:
+            return {"message": "An error occured while deleting User."}, 500
+
+        return {"message": "User deleted."}, 200
+
+
 class UserList(Resource):
 
     parser = reqparse.RequestParser()
@@ -29,7 +72,7 @@ class UserList(Resource):
 
         user = UserModel(**data)
         try:
-            user.save_to_db()
+            user.save()
         except:
             return {"message": "An error occured while inserting User."}, 500
 

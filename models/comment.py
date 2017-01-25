@@ -13,11 +13,15 @@ class CommentModel(db.Model):
 
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     course = db.relationship('CourseModel',
-                             backref=db.backref('comments', lazy='dynamic'))
+                             backref=db.backref('comments',
+                                                cascade='all, delete-orphan',
+                                                lazy='dynamic'))
 
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     author = db.relationship('UserModel',
-                             backref=db.backref('comments', lazy='dynamic'))
+                             backref=db.backref('comments',
+                                                cascade='all, delete-orphan',
+                                                lazy='dynamic'))
 
     def __init__(self, content, course_id, author_id):
         self.content = content
@@ -40,11 +44,16 @@ class CommentModel(db.Model):
             }
         }
 
-    def save_to_db(self):
+    def save(self):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
+    def update(self, **kwargs):
+        if kwargs['content']:
+            self.content = kwargs['content']
+        db.session.commit()
+
+    def delete(self):
         db.session.delete(self)
         db.session.commit()
 
