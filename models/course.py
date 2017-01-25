@@ -19,12 +19,12 @@ class CourseModel(db.Model):
     category = db.relationship('CategoryModel',
                                backref=db.backref('courses', lazy='dynamic'))
 
-    def __init__(self, title, content, author, category):
+    def __init__(self, title, content, author_id, category_id):
         self.title = title
         self.content = content
         self.date = datetime.utcnow()
-        self.author = author
-        self.category = category
+        self.author = UserModel.find_by_id(author_id)
+        self.category = CategoryModel.find_by_id(category_id)
 
     def json(self):
         return {
