@@ -10,16 +10,21 @@ class CourseModel(db.Model):
     title = db.Column(db.String(80), unique=True)
     content = db.Column(db.Text())
     date = db.Column(db.DateTime())
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
-    comments = db.relationship('CommentModel', backref='courses', lazy='dynamic')
 
-    def __init__(self, title, content, author_id, category_id):
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author = db.relationship('UserModel',
+                             backref=db.backref('courses', lazy='dynamic'))
+
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    category = db.relationship('CategoryModel',
+                               backref=db.backref('courses', lazy='dynamic'))
+
+    def __init__(self, title, content, author, category):
         self.title = title
         self.content = content
-        self.date = datetime.now()
-        self.author_id = author_id
-        self.category_id = category_id
+        self.date = datetime.utcnow()
+        self.author = author
+        self.category = category
 
     def json(self):
         return {
@@ -27,18 +32,16 @@ class CourseModel(db.Model):
             "title": self.title,
             "content": self.content,
             "created_at": self.date.strftime("%d/%m/%y - %H:%M:%S"),
-            "created_by": self.get_author(),
-            "category": self.get_category(),
+            "author": {
+                "id": self.author.id,
+                "username": self.author.username
+            },
+            "category": {
+                "id": self.category.id,
+                "name": self.category.name
+            },
             "comments": [comment.json() for comment in self.comments.all()]
         }
-
-    def get_author(self):
-        author = UserModel.query.filter_by(id=self.author_id).first()
-        return {"id": author.id, "name": author.username}
-
-    def get_category(self):
-        category = CategoryModel.query.filter_by(id=self.category_id).first()
-        return {"id": category.id, "name": category.name}
 
     def save_to_db(self):
         db.session.add(self)

@@ -9,8 +9,6 @@ class UserModel(db.Model):
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(80))
     email = db.Column(db.String(80))
-    courses = db.relationship('CourseModel', backref='users', lazy='dynamic')
-    comments = db.relationship('CommentModel', backref='users', lazy='dynamic')
 
     def __init__(self, username, password, email):
         self.username = username
