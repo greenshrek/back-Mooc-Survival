@@ -19,11 +19,11 @@ class CommentModel(db.Model):
     author = db.relationship('UserModel',
                              backref=db.backref('comments', lazy='dynamic'))
 
-    def __init__(self, content, course, author):
+    def __init__(self, content, course_id, author_id):
         self.content = content
         self.date = datetime.utcnow()
-        self.course = course
-        self.author = author
+        self.course = CourseModel.find_by_id(course_id)
+        self.author = UserModel.find_by_id(author_id)
 
     def json(self):
         return {
