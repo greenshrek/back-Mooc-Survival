@@ -16,16 +16,25 @@ class CommentModel(db.Model):
     def __init__(self, content, course_id, author_id):
         self.content = content
         self.date = datetime.now()
-        self.course = CourseModel.find_by_id(course_id)
-        self.author = UserModel.find_by_id(author_id)
+        self.course_id = course_id
+        self.author_id = author_id
 
     def json(self):
         return {
+            "id": self.id,
             "content": self.content,
             "created_at": self.date.strftime("%d/%m/%y - %H:%M:%S"),
-            "course": self.course.json(),
-            "author": self.author.json()
+            "course": self.get_course(),
+            "author": self.get_author()
         }
+
+    def get_author(self):
+        author = UserModel.query.filter_by(id=self.author_id).first()
+        return {"id": author.id, "name": author.username}
+
+    def get_course(self):
+        course = CourseModel.query.filter_by(id=self.course_id).first()
+        return {"id": course.id, "title": course.title}
 
     def save_to_db(self):
         db.session.add(self)
