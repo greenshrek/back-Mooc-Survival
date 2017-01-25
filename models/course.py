@@ -13,11 +13,15 @@ class CourseModel(db.Model):
 
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     author = db.relationship('UserModel',
-                             backref=db.backref('courses', lazy='dynamic'))
+                             backref=db.backref('courses',
+                                                cascade='all, delete-orphan',
+                                                lazy='dynamic'))
 
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     category = db.relationship('CategoryModel',
-                               backref=db.backref('courses', lazy='dynamic'))
+                               backref=db.backref('courses',
+                                                  cascade='all, delete-orphan',
+                                                  lazy='dynamic'))
 
     def __init__(self, title, content, author_id, category_id):
         self.title = title

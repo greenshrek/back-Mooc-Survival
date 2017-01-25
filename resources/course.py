@@ -2,6 +2,32 @@ from flask_restful import Resource, reqparse
 from models.course import CourseModel
 
 
+class Course(Resource):
+
+    parser = reqparse.RequestParser()
+
+    def get(self, course_id):
+        course = CourseModel.find_by_id(course_id)
+
+        if course is None:
+            return {"message": "Course not found."}, 404
+
+        return course.json(), 201
+
+    def delete(self, course_id):
+        course = CourseModel.find_by_id(course_id)
+
+        if course is None:
+            return {"message": "Course not found."}, 404
+
+        try:
+            course.delete_from_db()
+        except:
+            return {"message": "An error occured while deleting Course."}, 500
+
+        return {"message": "Course deleted."}, 200
+
+
 class CourseList(Resource):
 
     parser = reqparse.RequestParser()

@@ -2,6 +2,32 @@ from flask_restful import Resource, reqparse
 from models.comment import CommentModel
 
 
+class Comment(Resource):
+
+    parser = reqparse.RequestParser()
+
+    def get(self, comment_id):
+        comment = CommentModel.find_by_id(comment_id)
+
+        if comment is None:
+            return {"message": "Comment not found."}, 404
+
+        return comment.json(), 201
+
+    def delete(self, comment_id):
+        comment = CommentModel.find_by_id(comment_id)
+
+        if comment is None:
+            return {"message": "Comment not found."}, 404
+
+        try:
+            comment.delete_from_db()
+        except:
+            return {"message": "An error occured while deleting Comment."}, 500
+
+        return {"message": "Comment deleted."}, 200
+
+
 class CommentList(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('content',
