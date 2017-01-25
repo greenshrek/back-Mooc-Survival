@@ -17,11 +17,16 @@ class CategoryModel(db.Model):
             "courses": [course.json() for course in self.courses.all()]
         }
 
-    def save_to_db(self):
+    def save(self):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
+    def update(self, **kwargs):
+        if kwargs['name']:
+            self.name = kwargs['name']
+        db.session.commit()
+
+    def delete(self):
         db.session.delete(self)
         db.session.commit()
 

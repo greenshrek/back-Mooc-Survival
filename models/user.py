@@ -29,11 +29,18 @@ class UserModel(db.Model):
             "comments": [comment.json() for comment in self.comments.all()]
         }
 
-    def save_to_db(self):
+    def save(self):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
+    def update(self, **kwargs):
+        if kwargs['username']:
+            self.username = kwargs['username']
+        if kwargs['email']:
+            self.email = kwargs['email']
+        db.session.commit()
+
+    def delete(self):
         db.session.delete(self)
         db.session.commit()
 

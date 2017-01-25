@@ -5,6 +5,7 @@ from models.category import CategoryModel
 class Category(Resource):
 
     parser = reqparse.RequestParser()
+    parser.add_argument('name')
 
     def get(self, category_id):
         category = CategoryModel.find_by_id(category_id)
@@ -14,6 +15,21 @@ class Category(Resource):
 
         return category.json(), 201
 
+    def put(self, category_id):
+        data = self.parser.parse_args()
+
+        category = CategoryModel.find_by_id(category_id)
+
+        if category is None:
+            return {"message": "Category not found."}, 404
+
+        try:
+            category.update(**data)
+        except:
+            return {"message": "An error occured while updating Category."}, 500
+
+        return category.json(), 200
+
     def delete(self, category_id):
         category = CategoryModel.find_by_id(category_id)
 
@@ -21,7 +37,7 @@ class Category(Resource):
             return {"message": "Category not found."}, 404
 
         try:
-            category.delete_from_db()
+            category.delete()
         except:
             return {"message": "An error occured while deleting Category."}, 500
 
@@ -46,7 +62,7 @@ class CategoryList(Resource):
 
         category = CategoryModel(**data)
         try:
-            category.save_to_db()
+            category.save()
         except:
             return {"message": "An error occured while inserting Category"}, 500
 

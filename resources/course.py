@@ -5,6 +5,8 @@ from models.course import CourseModel
 class Course(Resource):
 
     parser = reqparse.RequestParser()
+    parser.add_argument('title')
+    parser.add_argument('content')
 
     def get(self, course_id):
         course = CourseModel.find_by_id(course_id)
@@ -14,6 +16,21 @@ class Course(Resource):
 
         return course.json(), 201
 
+    def put(self, course_id):
+        data = self.parser.parse_args()
+
+        course = CourseModel.find_by_id(course_id)
+
+        if course is None:
+            return {"message": "Course not found."}, 404
+
+        try:
+            course.update(**data)
+        except:
+            return {"message": "An error occured while updating Course."}, 500
+
+        return course.json(), 200
+
     def delete(self, course_id):
         course = CourseModel.find_by_id(course_id)
 
@@ -21,7 +38,7 @@ class Course(Resource):
             return {"message": "Course not found."}, 404
 
         try:
-            course.delete_from_db()
+            course.delete()
         except:
             return {"message": "An error occured while deleting Course."}, 500
 
@@ -58,7 +75,7 @@ class CourseList(Resource):
 
         course = CourseModel(**data)
         try:
-            course.save_to_db()
+            course.save()
         except:
             return {"message": "An error occured while inserting Course"}, 500
 
