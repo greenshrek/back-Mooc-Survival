@@ -8,26 +8,29 @@ class CommentModel(db.Model):
     __tablename__ = 'comments'
 
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255))
     content = db.Column(db.Text())
-    date = db.Column(db.DateTime())
+    created_at = db.Column(db.DateTime())
+    updated_at = db.Column(db.DateTime())
 
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
-    course = db.relationship('CourseModel',
-                             backref=db.backref('comments',
-                                                cascade='all, delete-orphan',
-                                                lazy='dynamic'))
-
+    course = db.relationship(
+        'CourseModel',
+        backref=db.backref('comments', cascade='all, delete-orphan',
+                           lazy='dynamic')
+    )
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    author = db.relationship('UserModel',
-                             backref=db.backref('comments',
-                                                cascade='all, delete-orphan',
-                                                lazy='dynamic'))
+    author = db.relationship(
+        'UserModel',
+        backref=db.backref('comments', cascade='all, delete-orphan',
+                           lazy='dynamic')
+    )
 
-    def __init__(self, content, course_id, author_id):
+    def __init__(self, title, content):
+        self.title = title
         self.content = content
-        self.date = datetime.utcnow()
-        self.course = CourseModel.find_by_id(course_id)
-        self.author = UserModel.find_by_id(author_id)
+        self.created_at = datetime.utcnow()
+        self.updated_at = datetime.utcnow()
 
     def json(self):
         return {

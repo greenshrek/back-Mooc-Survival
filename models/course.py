@@ -3,32 +3,44 @@ from db import db
 from models.user import UserModel
 from models.category import CategoryModel
 
+
+enrolled_courses = db.Table('enrolled_courses',
+    db.Column('course_id', db.Integer, db.ForeignKey('courses.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+)
+
+
 class CourseModel(db.Model):
     __tablename__ = 'courses'
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), unique=True)
     content = db.Column(db.Text())
-    date = db.Column(db.DateTime())
+    created_at = db.Column(db.DateTime())
+    updated_at = db.Column(db.DateTime())
+    picture = db.Column(db.String(255))
 
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    author = db.relationship('UserModel',
-                             backref=db.backref('courses',
-                                                cascade='all, delete-orphan',
-                                                lazy='dynamic'))
-
+    author = db.relationship(
+        'UserModel',
+        backref=db.backref('published_courses', cascade='all, delete-orphan',
+                           lazy='dynamic')
+    )
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
-    category = db.relationship('CategoryModel',
-                               backref=db.backref('courses',
-                                                  cascade='all, delete-orphan',
-                                                  lazy='dynamic'))
+    category = db.relationship(
+        'CategoryModel',
+        backref=db.backref('courses', cascade='all, delete-orphan',
+                           lazy='dynamic')
+    )
+    students = db.relationship('UserModel', secondary=enrolled_courses,
+        backref=db.backref('enrolled_courses', lazy='dynamic'))
 
-    def __init__(self, title, content, author_id, category_id):
+    def __init__(self, title, content, picture=None):
         self.title = title
         self.content = content
-        self.date = datetime.utcnow()
-        self.author = UserModel.find_by_id(author_id)
-        self.category = CategoryModel.find_by_id(category_id)
+        self.created_at = datetime.utcnow()
+        self.updated_at = datetime.utcnow()
+        self.picture = picture
 
     def json(self):
         return {
