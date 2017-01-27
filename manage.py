@@ -7,6 +7,10 @@ from models.category import CategoryModel
 from models.comment import CommentModel
 from models.rating import RatingModel
 from models.badge import BadgeModel
+from models.chapter import ChapterModel
+from models.quiz import QuizModel
+from models.question import QuestionModel
+from models.answer import AnswerModel
 
 from app import create_app
 from db import db
@@ -106,6 +110,44 @@ def populatedb():
     print('badge course and badge student')
     for student in math_badge.students:
         print('>>> {} badge earned by {}'.format(math_badge.name, student.username))
+    ###################
+    chapter1 = ChapterModel('adds', '2 + 2 = 4', 1)
+    chapter2 = ChapterModel('subs', '2 - 2 = 0', 2)
+    quiz = QuizModel('first grade', 1)
+    question1 = QuestionModel('1 + 1?', 1, 2)
+    answer1 = AnswerModel('0', 1)
+    answer2 = AnswerModel('2', 2)
+    question2 = QuestionModel('3 - 1?', 2, 1)
+    answer3 = AnswerModel('2', 1)
+    answer4 = AnswerModel('4', 2)
+    db.session.add_all([chapter1, chapter2, quiz, question1, question2, answer1, answer2, answer3, answer4])
+    math_course.chapters.append(chapter1)
+    math_course.chapters.append(chapter2)
+    math_course.quizzes.append(quiz)
+    quiz.questions.append(question1)
+    quiz.questions.append(question2)
+    question1.answers.append(answer1)
+    question1.answers.append(answer2)
+    question2.answers.append(answer3)
+    question2.answers.append(answer4)
+    print('::: test chapters and quizzes and questions and answers ::: ok')
+    ###################
+    print('chapters in math_course')
+    for chapter in math_course.chapters:
+        print('>>> {}'.format(chapter.title))
+    print('quizzes in math_course')
+    for quiz in math_course.quizzes:
+        print('>>> {}'.format(quiz.title))
+    print('questions in quiz')
+    for question in quiz.questions:
+        print('>>> {}'.format(question.question))
+    print('answers in question1')
+    for answer in question1.answers:
+        print('>>> {}'.format(answer.answer))
+    print('for question1 the good answer is number {}'.format(question1.good_answer))
+    current_question = question1.question
+    good_answer = AnswerModel.query.filter_by(number=question1.good_answer).first()
+    print('question: {} | response: {}'.format(current_question, good_answer.answer))
     ###################
 
 
