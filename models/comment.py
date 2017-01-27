@@ -1,6 +1,6 @@
 from datetime import datetime
 from db import db
-from models.user import StudentModel, InstructorModel
+from models.user import UserModel
 from models.course import CourseModel
 
 
@@ -19,30 +19,18 @@ class CommentModel(db.Model):
         backref=db.backref('comments', cascade='all, delete-orphan',
                            lazy='dynamic')
     )
-    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    student = db.relationship(
-        'StudentModel',
-        backref=db.backref('comments', cascade='all, delete-orphan',
-                           lazy='dynamic')
-    )
-    instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'))
-    instructor = db.relationship(
-        'InstructorModel',
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author = db.relationship(
+        'UserModel',
         backref=db.backref('comments', cascade='all, delete-orphan',
                            lazy='dynamic')
     )
 
-    def __init__(self, title, content, course_id,
-                 student_id=None, instructor_id=None):
+    def __init__(self, title, content):
         self.title = title
         self.content = content
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
-        self.course = CourseModel.find_by_id(course_id)
-        if StudentModel.find_by_id(student_id):
-            self.student = StudentModel.find_by_id(student_id)
-        if InstructorModel.find_by_id(instructor_id):
-            self.instructor = InstructorModel.find_by_id(instructor_id)
 
     def json(self):
         return {

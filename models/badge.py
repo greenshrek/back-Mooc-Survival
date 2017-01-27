@@ -1,4 +1,10 @@
+from datetime import datetime
 from db import db
+
+users_badges = db.Table('users_badges',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('badge_id', db.Integer, db.ForeignKey('badges.id'))
+)
 
 
 class BadgeModel(db.Model):
@@ -10,9 +16,15 @@ class BadgeModel(db.Model):
     updated_at = db.Column(db.DateTime())
     picture = db.Column(db.String(255))
 
-    author_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    author = db.relationship(
-        'StudentModel',
-        backref=db.backref('badges', cascade='all, delete-orphan',
-                           lazy='dynamic')
-    )
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    course = db.relationship('CourseModel',
+        backref=db.backref('badge', uselist=False))
+
+    students = db.relationship('UserModel', secondary=users_badges,
+        backref=db.backref('badges', lazy='dynamic'))
+
+    def __init__(self, name, picture=None):
+        self.name = name
+        self.created_at = datetime.utcnow()
+        self.updated_at = datetime.utcnow()
+        self.picture = picture
