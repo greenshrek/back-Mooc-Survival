@@ -35,11 +35,12 @@ class UserModel(db.Model):
     updated_at = db.Column(db.DateTime())
     picture = db.Column(db.String(255))
 
-    def __init__(self, username, password, email,
+    def __init__(self, username, password, email, role,
                  firstname=None, lastname=None, picture=None):
         self.username = username
         self.set_password(password)
         self.email = email
+        self.add_role(role)
         self.firstname = firstname
         self.lastname = lastname
         self.picture = picture
@@ -51,6 +52,10 @@ class UserModel(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+    def add_role(self, role_name):
+        role = RoleModel.query.filter_by(name=role_name).first()
+        self.roles.append(role)
 
     def save(self):
         db.session.add(self)
