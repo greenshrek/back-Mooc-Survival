@@ -35,12 +35,26 @@ class CourseModel(db.Model):
     students = db.relationship('UserModel', secondary=enrolled_courses,
         backref=db.backref('enrolled_courses', lazy='dynamic'))
 
-    def __init__(self, title, content, picture=None):
+    def __init__(self, title, content, author_id, category_id, picture=None):
         self.title = title
         self.content = content
+        self.add_author(author_id)
+        self.add_category(category_id)
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
         self.picture = picture
+
+    def add_author(self, author_id):
+        author = UserModel.query.filter_by(id=author_id).first()
+        self.author = author
+
+    def add_category(self, category_id):
+        category = CategoryModel.query.filter_by(id=category_id).first()
+        self.category = category
+
+    def register_student(self, student_id):
+        student = UserModel.query.filter_by(id=student_id).first()
+        self.students.append(student)
 
     def json(self):
         return {

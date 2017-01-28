@@ -1,11 +1,7 @@
 from datetime import datetime
 from db import db
+from models.course import CourseModel
 
-
-chapters_courses = db.Table('chapters_courses',
-    db.Column('chapter_id', db.Integer, db.ForeignKey('chapters.id')),
-    db.Column('course_id', db.Integer, db.ForeignKey('courses.id'))
-)
 
 class ChapterModel(db.Model):
     __tablename__ = 'chapters'
@@ -17,12 +13,21 @@ class ChapterModel(db.Model):
     created_at = db.Column(db.DateTime())
     updated_at = db.Column(db.DateTime())
 
-    courses = db.relationship('CourseModel', secondary=chapters_courses,
-        backref=db.backref('chapters', lazy='dynamic'))
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    course = db.relationship(
+        'CourseModel',
+        backref=db.backref('chapters', cascade='all, delete-orphan',
+                           lazy='dynamic')
+    )
 
-    def __init__(self, title, content, number):
+    def __init__(self, title, content, number, course_id):
         self.title = title
         self.content = content
         self.number = number
+        self.add_course(course_id)
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
+
+    def add_course(self, course_id):
+        course = CourseModel.query.filter_by(id=course_id).first()
+        self.course = course

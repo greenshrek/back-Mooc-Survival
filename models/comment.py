@@ -26,11 +26,21 @@ class CommentModel(db.Model):
                            lazy='dynamic')
     )
 
-    def __init__(self, title, content):
+    def __init__(self, title, content, course_id, author_id):
         self.title = title
         self.content = content
+        self.add_course(course_id)
+        self.add_author(author_id)
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
+
+    def add_course(self, course_id):
+        course = CourseModel.query.filter_by(id=course_id).first()
+        self.course = course
+
+    def add_author(self, author_id):
+        author = UserModel.query.filter_by(id=author_id).first()
+        self.author = author
 
     def json(self):
         return {

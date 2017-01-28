@@ -1,5 +1,6 @@
 from datetime import datetime
 from db import db
+from models.quiz import QuizModel
 
 
 class QuestionModel(db.Model):
@@ -19,9 +20,14 @@ class QuestionModel(db.Model):
                            lazy='dynamic')
     )
 
-    def __init__(self, question, number, good_answer):
+    def __init__(self, question, number, good_answer, quiz_id):
         self.question = question
         self.number = number
         self.good_answer = good_answer
+        self.add_quiz(quiz_id)
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
+
+    def add_quiz(self, quiz_id):
+        quiz = QuizModel.query.filter_by(id=quiz_id).first()
+        self.quiz = quiz
