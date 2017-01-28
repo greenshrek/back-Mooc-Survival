@@ -21,6 +21,12 @@ class RoleModel(db.Model):
     def __init__(self, name):
         self.name = name
 
+    def json(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
+
 
 class UserModel(db.Model):
     __tablename__ = 'users'
@@ -35,8 +41,8 @@ class UserModel(db.Model):
     updated_at = db.Column(db.DateTime())
     picture = db.Column(db.String(255))
 
-    def __init__(self, username, password, email, role,
-                 firstname=None, lastname=None, picture=None):
+    def __init__(self, username, password, email,
+                 role, firstname, lastname, picture):
         self.username = username
         self.set_password(password)
         self.email = email
@@ -66,11 +72,29 @@ class UserModel(db.Model):
             self.username = kwargs['username']
         if kwargs['email']:
             self.email = kwargs['email']
+        if kwargs['firstname']:
+            self.firstname = kwargs['firstname']
+        if kwargs['lastname']:
+            self.lastname = kwargs['lastname']
+        if kwargs['picture']:
+            self.picture = kwargs['picture']
+        self.updated_at = datetime.utcnow()
         db.session.commit()
 
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def json(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "email": self.email,
+            "picture_url": self.picture,
+            "roles": [role.json() for role in self.roles]
+        }
 
     @classmethod
     def find_by_id(cls, user_id):

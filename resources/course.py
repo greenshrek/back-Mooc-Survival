@@ -7,6 +7,7 @@ class Course(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('title')
     parser.add_argument('content')
+    parser.add_argument('picture')
 
     def get(self, course_id):
         course = CourseModel.find_by_id(course_id)
@@ -60,6 +61,7 @@ class CourseList(Resource):
     parser.add_argument('category_id',
                         required=True,
                         help="A category id must be provided.")
+    parser.add_argument('picture')
 
     def get(self):
         courses = CourseModel.query.all()

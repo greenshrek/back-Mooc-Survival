@@ -42,11 +42,29 @@ class CommentModel(db.Model):
         author = UserModel.query.filter_by(id=author_id).first()
         self.author = author
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self, **kwargs):
+        if kwargs['title']:
+            self.title = kwargs['title']
+        if kwargs['content']:
+            self.content = kwargs['content']
+        self.updated_at = datetime.now()
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
     def json(self):
         return {
             "id": self.id,
+            "title": self.title,
             "content": self.content,
-            "created_at": self.date.strftime("%d/%m/%y - %H:%M:%S"),
+            "created_at": self.created_at.strftime("%d/%m/%y - %H:%M:%S"),
+            "updated_at": self.updated_at.strftime("%d/%m/%y - %H:%M:%S"),
             "course": {
                 "id": self.course.id,
                 "title": self.course.title
@@ -56,19 +74,6 @@ class CommentModel(db.Model):
                 "username": self.author.username
             }
         }
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def update(self, **kwargs):
-        if kwargs['content']:
-            self.content = kwargs['content']
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
 
     @classmethod
     def find_by_id(cls, comment_id):

@@ -6,6 +6,9 @@ class Category(Resource):
 
     parser = reqparse.RequestParser()
     parser.add_argument('name')
+    parser.add_argument('fr_label')
+    parser.add_argument('en_label')
+    parser.add_argument('picture')
 
     def get(self, category_id):
         category = CategoryModel.find_by_id(category_id)
@@ -46,7 +49,12 @@ class Category(Resource):
 class CategoryList(Resource):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('name', required=True)
+    parser.add_argument('name',
+                        required=True,
+                        help="A name must be provided.")
+    parser.add_argument('fr_label')
+    parser.add_argument('en_label')
+    parser.add_argument('picture')
 
     def get(self):
         categories = CategoryModel.query.all()
