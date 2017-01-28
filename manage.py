@@ -11,6 +11,7 @@ from models.chapter import ChapterModel
 from models.quiz import QuizModel
 from models.question import QuestionModel
 from models.answer import AnswerModel
+from models.score import ScoreModel
 
 from app import create_app
 from db import db
@@ -120,7 +121,8 @@ def populatedb():
     question2 = QuestionModel('3 - 1?', 2, 1)
     answer3 = AnswerModel('2', 1)
     answer4 = AnswerModel('4', 2)
-    db.session.add_all([chapter1, chapter2, quiz, question1, question2, answer1, answer2, answer3, answer4])
+    lisa_score = ScoreModel(2, 2)
+    db.session.add_all([chapter1, chapter2, quiz, question1, question2, answer1, answer2, answer3, answer4, lisa_score])
     math_course.chapters.append(chapter1)
     math_course.chapters.append(chapter2)
     math_course.quizzes.append(quiz)
@@ -130,7 +132,10 @@ def populatedb():
     question1.answers.append(answer2)
     question2.answers.append(answer3)
     question2.answers.append(answer4)
-    print('::: test chapters and quizzes and questions and answers ::: ok')
+    lisa.scores.append(lisa_score)
+    quiz.scores.append(lisa_score)
+    db.session.commit()
+    print('::: test chapters and quizzes and questions and answers and scores ::: ok')
     ###################
     print('chapters in math_course')
     for chapter in math_course.chapters:
@@ -148,6 +153,9 @@ def populatedb():
     current_question = question1.question
     good_answer = AnswerModel.query.filter_by(number=question1.good_answer).first()
     print('question: {} | response: {}'.format(current_question, good_answer.answer))
+    print('lisa scores')
+    for score in lisa.scores:
+        print('>>> {}/{}'.format(score.score, score.max_score))
     ###################
 
 
