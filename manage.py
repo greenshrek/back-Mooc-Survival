@@ -50,14 +50,14 @@ def new_test_db():
     english = CategoryModel('english')
     db.session.add_all([maths, english])
     db.session.commit()
-    math_course = CourseModel('mathematics', 'basic operations', 'simour', 'maths')
-    english_course = CourseModel('english', 'grammar', 'edna', 'english')
+    math_course = CourseModel('mathematics', 'basic operations', simour.id, maths.id)
+    english_course = CourseModel('english', 'grammar', edna.id, english.id)
     db.session.add_all([math_course, english_course])
     db.session.commit()
-    math_course.register_student('bart')
-    math_course.register_student('lisa')
-    english_course.register_student('lisa')
-    english_course.register_student('millhouse')
+    math_course.register_student(bart.id)
+    math_course.register_student(lisa.id)
+    english_course.register_student(lisa.id)
+    english_course.register_student(millhouse.id)
     db.session.commit()
     print('::: test categories and courses ::: ok')
     ###################
@@ -81,6 +81,7 @@ def new_test_db():
     db.session.commit()
     question1 = QuestionModel('1 + 1?', 1, 2, quiz1.id)
     db.session.add(question1)
+    db.session.commit()
     answer1 = AnswerModel('0', 1, question1.id)
     db.session.add(answer1)
     answer2 = AnswerModel('2', 2, question1.id)
@@ -110,6 +111,39 @@ def new_test_db():
     current_question = question1.question
     good_answer = AnswerModel.query.filter_by(number=question1.good_answer).first()
     print('question: {} | response: {}'.format(current_question, good_answer.answer))
+    ###################
+    comment1 = CommentModel('hay caramba', 'hay caramba', math_course.id, bart.id)
+    comment2 = CommentModel('retention', 'retention', math_course.id, simour.id)
+    comment3 = CommentModel('eat my short', 'eat my short', math_course.id, bart.id)
+    db.session.add_all([comment1, comment2, comment3])
+    db.session.commit()
+    rate1 = RatingModel(5, english_course.id, lisa.id)
+    rate2 = RatingModel(3, english_course.id, millhouse.id)
+    db.session.add_all([rate1, rate2])
+    db.session.commit()
+    print('::: test comments and ratings ::: ok')
+    ###################
+    print('comments in math_course')
+    for comment in math_course.comments:
+        print('>>> {} by {}'.format(comment.title, comment.author.username))
+    print('ratings in english_course')
+    for rate in english_course.ratings:
+        print('>>> {}/5 by {}'.format(rate.rate, rate.author.username))
+    ###################
+    score = ScoreModel(2, 2, lisa.id, quiz1.id)
+    db.session.add(score)
+    db.session.commit()
+    badge = BadgeModel('honor', math_course.id, lisa.id)
+    db.session.add(badge)
+    db.session.commit()
+    print('::: test scores and badges ::: ok')
+    ###################
+    print('badges earned by lisa')
+    for badge in lisa.badges:
+        print('>>> {}'.format(badge.name))
+    print('scores in quiz1')
+    for score in quiz1.scores:
+        print('>>> {} by {}'.format(score.score, score.student.username))
     ###################
 
 

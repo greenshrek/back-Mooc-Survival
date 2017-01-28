@@ -1,5 +1,7 @@
 from datetime import datetime
 from db import db
+from models.course import CourseModel
+from models.user import UserModel
 
 
 class RatingModel(db.Model):
@@ -23,7 +25,17 @@ class RatingModel(db.Model):
                            lazy='dynamic')
     )
 
-    def __init__(self, rate):
+    def __init__(self, rate, course_id, author_id):
         self.rate = rate
+        self.add_course(course_id)
+        self.add_author(author_id)
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
+
+    def add_course(self, course_id):
+        course = CourseModel.query.filter_by(id=course_id).first()
+        self.course = course
+
+    def add_author(self, author_id):
+        author = UserModel.query.filter_by(id=author_id).first()
+        self.author = author

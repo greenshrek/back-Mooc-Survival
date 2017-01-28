@@ -1,5 +1,7 @@
 from datetime import datetime
 from db import db
+from models.user import UserModel
+from models.course import CourseModel
 
 users_badges = db.Table('users_badges',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
@@ -23,8 +25,18 @@ class BadgeModel(db.Model):
     students = db.relationship('UserModel', secondary=users_badges,
         backref=db.backref('badges', lazy='dynamic'))
 
-    def __init__(self, name, picture=None):
+    def __init__(self, name, course_id, student_id, picture=None):
         self.name = name
+        self.add_course(course_id)
+        self.add_student(student_id)
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
         self.picture = picture
+
+    def add_course(self, course_id):
+        course = CourseModel.query.filter_by(id=course_id).first()
+        self.course = course
+
+    def add_student(self, student_id):
+        student = UserModel.query.filter_by(id=student_id).first()
+        self.students.append(student)
