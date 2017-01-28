@@ -35,7 +35,7 @@ class CourseModel(db.Model):
     students = db.relationship('UserModel', secondary=enrolled_courses,
         backref=db.backref('enrolled_courses', lazy='dynamic'))
 
-    def __init__(self, title, content, author_id, category_id, picture=None):
+    def __init__(self, title, content, author_id, category_id, picture):
         self.title = title
         self.content = content
         self.add_author(author_id)
@@ -56,23 +56,6 @@ class CourseModel(db.Model):
         student = UserModel.query.filter_by(id=student_id).first()
         self.students.append(student)
 
-    def json(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "content": self.content,
-            "created_at": self.date.strftime("%d/%m/%y - %H:%M:%S"),
-            "author": {
-                "id": self.author.id,
-                "username": self.author.username
-            },
-            "category": {
-                "id": self.category.id,
-                "name": self.category.name
-            },
-            "comments": [comment.json() for comment in self.comments.all()]
-        }
-
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -82,11 +65,34 @@ class CourseModel(db.Model):
             self.title = kwargs['title']
         if kwargs['content']:
             self.content = kwargs['content']
+        if kwargs['picture']:
+            self.picture = kwargs['picture']
+        self.updated_at = datetime.utcnow()
         db.session.commit()
 
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def json(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "content": self.content,
+            "created_at": self.created_at.strftime("%d/%m/%y - %H:%M:%S"),
+            "updated_at": self.updated_at.strftime("%d/%m/%y - %H:%M:%S"),
+            "author": {
+                "id": self.author.id,
+                "username": self.author.username
+            },
+            "category": {
+                "id": self.category.id,
+                "name": self.category.name
+            },
+            "comments": [comment.json() for comment in self.comments],
+            "students": [student.json() for student in self.students]
+        }
+
 
     @classmethod
     def find_by_id(cls, course_id):

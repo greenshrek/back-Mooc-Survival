@@ -7,6 +7,9 @@ class User(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('username')
     parser.add_argument('email')
+    parser.add_argument('picture')
+    parser.add_argument('firstname')
+    parser.add_argument('lastname')
 
     def get(self, user_id):
         user = UserModel.find_by_id(user_id)
@@ -57,6 +60,12 @@ class UserList(Resource):
     parser.add_argument('password',
                         required=True,
                         help="A user password must be provided.")
+    parser.add_argument('role',
+                        required=True,
+                        help="A user role must be provided.")
+    parser.add_argument('picture')
+    parser.add_argument('firstname')
+    parser.add_argument('lastname')
 
     def get(self):
         users = UserModel.query.all()

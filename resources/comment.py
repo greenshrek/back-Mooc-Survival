@@ -5,6 +5,7 @@ from models.comment import CommentModel
 class Comment(Resource):
 
     parser = reqparse.RequestParser()
+    parser.add_argument('title')
     parser.add_argument('content')
 
     def get(self, comment_id):
@@ -46,6 +47,9 @@ class Comment(Resource):
 
 class CommentList(Resource):
     parser = reqparse.RequestParser()
+    parser.add_argument('title',
+                        required=True,
+                        help="A title must be provided.")
     parser.add_argument('content',
                         required=True,
                         help="A content must be provided.")
