@@ -41,3 +41,40 @@ class ScoreModel(db.Model):
     def add_quiz(self, quiz_id):
         quiz = QuizModel.query.filter_by(id=quiz_id).first()
         self.quiz = quiz
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self, **kwargs):
+        if kwargs['score']:
+            self.score = kwargs['score']
+        if kwargs['max_score']:
+            self.max_score = kwargs['max_score']
+        self.updated_at = datetime.now()
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def json(self):
+        return {
+            "id": self.id,
+            "score": self.score,
+            "max_score": self.max_score,
+            "created_at": self.created_at.strftime("%d/%m/%y"),
+            "updated_at": self.updated_at.strftime("%d/%m/%y"),
+            "quiz": {
+                "id": self.quiz.id,
+                "title": self.quiz.title
+            },
+            "student": {
+                "id": self.student.id,
+                "title": self.student.username
+            }
+        }
+
+    @classmethod
+    def find_by_id(cls, score_id):
+        return cls.query.filter_by(id=score_id).first()

@@ -93,7 +93,8 @@ class UserModel(db.Model):
             "lastname": self.lastname,
             "email": self.email,
             "picture_url": self.picture,
-            "roles": [role.json() for role in self.roles]
+            "roles": [role.json() for role in self.roles],
+            "badges": [badge.json() for badge in self.badges]
         }
 
     @classmethod

@@ -11,6 +11,9 @@ from resources.chapter import ChapterList, Chapter
 from resources.quiz import QuizList, Quiz
 from resources.question import QuestionList, Question
 from resources.answer import AnswerList, Answer
+from resources.score import ScoreList, Score
+from resources.badge import BadgeList, Badge
+from resources.rating import RatingList, Rating
 
 def create_app():
     app = Flask(__name__)
@@ -21,14 +24,14 @@ def create_app():
 
     api = Api(app)
     # users
-    api.add_resource(UserList, '/users')
     api.add_resource(User, '/users/<int:user_id>')
+    api.add_resource(UserList, '/users')
     # categories
-    api.add_resource(CategoryList, '/categories')
     api.add_resource(Category, '/categories/<int:category_id>')
+    api.add_resource(CategoryList, '/categories')
     # courses
-    api.add_resource(CourseList, '/courses')
     api.add_resource(Course, '/courses/<int:course_id>')
+    api.add_resource(CourseList, '/courses')
     # chapters
     api.add_resource(Chapter, '/courses/<int:course_id>/chapters/<int:chapter_id>')
     api.add_resource(ChapterList, '/courses/<int:course_id>/chapters')
@@ -42,7 +45,16 @@ def create_app():
     api.add_resource(Answer, '/questions/<int:question_id>/answers/<int:answer_id>')
     api.add_resource(AnswerList, '/questions/<int:question_id>/answers')
     # comments
-    api.add_resource(CommentList, '/comments')
     api.add_resource(Comment, '/comments/<int:comment_id>')
+    api.add_resource(CommentList, '/comments')
+    # scores
+    api.add_resource(Score, '/quizzes/<int:quiz_id>/students/<int:student_id>/scores/<int:score_id>')
+    api.add_resource(ScoreList, '/quizzes/<int:quiz_id>/students/<int:student_id>/scores')
+    # badges
+    api.add_resource(Badge, '/courses/<int:course_id>/badges/<int:badge_id>')
+    api.add_resource(BadgeList, '/courses/<int:course_id>/badges')
+    # ratings
+    api.add_resource(Rating, '/courses/<int:course_id>/ratings/<int:rating_id>')
+    api.add_resource(RatingList, '/courses/<int:course_id>/ratings')
 
     return app
