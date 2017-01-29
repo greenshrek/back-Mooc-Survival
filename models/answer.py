@@ -29,3 +29,40 @@ class AnswerModel(db.Model):
     def add_question(self, question_id):
         question = QuestionModel.query.filter_by(id=question_id).first()
         self.question = question
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self, **kwargs):
+        if kwargs['answer']:
+            self.answer = kwargs['answer']
+        if kwargs['number']:
+            self.number = kwargs['number']
+        self.updated_at = datetime.now()
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def json(self):
+        return {
+            "id": self.id,
+            "answer": self.answer,
+            "number": self.number,
+            "created_at": self.created_at.strftime("%d/%m/%y"),
+            "updated_at": self.updated_at.strftime("%d/%m/%y"),
+            "question": {
+                "id": self.question.id,
+                "question": self.question.question
+            }
+        }
+
+    @classmethod
+    def find_by_id(cls, answer_id):
+        return cls.query.filter_by(id=answer_id).first()
+
+    @classmethod
+    def find_by_question(cls, question_id):
+        return cls.query.filter_by(question_id=question_id).all()

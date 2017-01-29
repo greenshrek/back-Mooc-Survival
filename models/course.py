@@ -90,7 +90,8 @@ class CourseModel(db.Model):
                 "name": self.category.name
             },
             "comments": [comment.json() for comment in self.comments],
-            "students": [student.json() for student in self.students]
+            "students": [student.json() for student in self.students],
+            "chapters": [chapter.json() for chapter in self.chapters]
         }
 
 
