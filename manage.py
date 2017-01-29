@@ -1,18 +1,6 @@
 from flask_script import Server, Manager
 from flask_migrate import Migrate, MigrateCommand
 
-from models.user import UserModel, RoleModel
-from models.course import CourseModel
-from models.category import CategoryModel
-from models.comment import CommentModel
-from models.rating import RatingModel
-from models.badge import BadgeModel
-from models.chapter import ChapterModel
-from models.quiz import QuizModel
-from models.question import QuestionModel
-from models.answer import AnswerModel
-from models.score import ScoreModel
-
 from app import create_app
 from db import db
 
@@ -23,9 +11,11 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('runserver', Server(port=5555))
 manager.add_command('db', MigrateCommand)
-
+# TODO: build tests and remove test_db and models import
 @manager.command
 def test_db():
+    from models.user import UserModel, RoleModel
+
     student = RoleModel('student')
     instructor = RoleModel('instructor')
     db.session.add_all([student, instructor])
@@ -46,6 +36,10 @@ def test_db():
     for instructor in instructor.users:
         print('>>> {}'.format(instructor.username))
     ###################
+
+    from models.course import CourseModel
+    from models.category import CategoryModel
+
     maths = CategoryModel('maths', fr_label=None, en_label=None, picture=None)
     english = CategoryModel('english', fr_label=None, en_label=None, picture=None)
     db.session.add_all([maths, english])
@@ -70,6 +64,12 @@ def test_db():
     for course in edna.published_courses:
         print('>>> {} - {}'.format(course.title, course.category.name))
     ###################
+
+    from models.chapter import ChapterModel
+    from models.quiz import QuizModel
+    from models.question import QuestionModel
+    from models.answer import AnswerModel
+
     chapter1 = ChapterModel('adds', '2 + 2 = 4', 1, math_course.id)
     chapter2 = ChapterModel('subs', '2 - 2 = 0', 2, math_course.id)
     db.session.add_all([chapter1, chapter2])
@@ -112,6 +112,10 @@ def test_db():
     good_answer = AnswerModel.query.filter_by(number=question1.good_answer).first()
     print('question: {} | response: {}'.format(current_question, good_answer.answer))
     ###################
+
+    from models.comment import CommentModel
+    from models.rating import RatingModel
+
     comment1 = CommentModel('hay caramba', 'hay caramba', math_course.id, bart.id)
     comment2 = CommentModel('retention', 'retention', math_course.id, simour.id)
     comment3 = CommentModel('eat my short', 'eat my short', math_course.id, bart.id)
@@ -130,6 +134,10 @@ def test_db():
     for rate in english_course.ratings:
         print('>>> {}/5 by {}'.format(rate.rate, rate.author.username))
     ###################
+
+    from models.badge import BadgeModel
+    from models.score import ScoreModel
+    
     score = ScoreModel(2, 2, lisa.id, quiz1.id)
     db.session.add(score)
     db.session.commit()
