@@ -29,3 +29,41 @@ class QuizModel(db.Model):
     def add_course(self, course_id):
         course = CourseModel.query.filter_by(id=course_id).first()
         self.course = course
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self, **kwargs):
+        if kwargs['title']:
+            self.title = kwargs['title']
+        if kwargs['number']:
+            self.number = kwargs['number']
+        self.updated_at = datetime.now()
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def json(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "number": self.number,
+            "created_at": self.created_at.strftime("%d/%m/%y"),
+            "updated_at": self.updated_at.strftime("%d/%m/%y"),
+            "course": {
+                "id": self.course.id,
+                "title": self.course.title
+            },
+            "questions": [question.json() for question in self.questions]
+        }
+
+    @classmethod
+    def find_by_id(cls, quiz_id):
+        return cls.query.filter_by(id=quiz_id).first()
+
+    @classmethod
+    def find_by_course(cls, course_id):
+        return cls.query.filter_by(course_id=course_id).all()
