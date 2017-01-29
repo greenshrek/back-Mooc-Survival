@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 from flask_restful import Api, Resource
-
+# import resources
 from resources.course import CourseList, Course
 from resources.user import UserList, User
 from resources.category import CategoryList, Category
