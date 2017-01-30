@@ -22,39 +22,40 @@ def create_app():
     from db import db
     db.init_app(app)
 
+    # TODO: check resources: comments, ratings, scores
     api = Api(app)
     # users
-    api.add_resource(User, '/users/<int:user_id>')
-    api.add_resource(UserList, '/users')
-    # categories
-    api.add_resource(Category, '/categories/<int:category_id>')
-    api.add_resource(CategoryList, '/categories')
-    # courses
-    api.add_resource(Course, '/courses/<int:course_id>')
-    api.add_resource(CourseList, '/courses')
-    # chapters
-    api.add_resource(Chapter, '/courses/<int:course_id>/chapters/<int:chapter_id>')
-    api.add_resource(ChapterList, '/courses/<int:course_id>/chapters')
-    # quizzes
-    api.add_resource(Quiz, '/courses/<int:course_id>/quizzes/<int:quiz_id>')
-    api.add_resource(QuizList, '/courses/<int:course_id>/quizzes')
-    # questions
-    api.add_resource(Question, '/quizzes/<int:quiz_id>/questions/<int:question_id>')
-    api.add_resource(QuestionList, '/quizzes/<int:quiz_id>/questions')
-    # answers
-    api.add_resource(Answer, '/questions/<int:question_id>/answers/<int:answer_id>')
-    api.add_resource(AnswerList, '/questions/<int:question_id>/answers')
-    # comments
-    api.add_resource(Comment, '/comments/<int:comment_id>')
-    api.add_resource(CommentList, '/comments')
-    # scores
-    api.add_resource(Score, '/quizzes/<int:quiz_id>/students/<int:student_id>/scores/<int:score_id>')
-    api.add_resource(ScoreList, '/quizzes/<int:quiz_id>/students/<int:student_id>/scores')
+    api.add_resource(UserList, '/v1/users')
+    api.add_resource(User, '/v1/users/<int:user_id>')
     # badges
-    api.add_resource(Badge, '/courses/<int:course_id>/badges/<int:badge_id>')
-    api.add_resource(BadgeList, '/courses/<int:course_id>/badges')
+    api.add_resource(BadgeList, '/v1/users/<int:student_id>/badges')
+    api.add_resource(Badge, '/v1/users/<int:student_id>/badges/<int:badge_id>')
+    # categories
+    api.add_resource(CategoryList, '/v1/categories')
+    api.add_resource(Category, '/v1/categories/<int:category_id>')
+    # courses
+    api.add_resource(CourseList, '/v1/courses')
+    api.add_resource(Course, '/v1/courses/<int:course_id>')
+    # chapters
+    api.add_resource(ChapterList, '/v1/courses/<int:course_id>/chapters')
+    api.add_resource(Chapter, '/v1/courses/<int:course_id>/chapters/<int:chapter_id>')
+    # quizzes
+    api.add_resource(QuizList, '/v1/courses/<int:course_id>/quizzes')
+    api.add_resource(Quiz, '/v1/courses/<int:course_id>/quizzes/<int:quiz_id>')
+    # comments
+    api.add_resource(CommentList, '/v1/courses/<int:course_id>comments')
+    api.add_resource(Comment, '/v1/courses/<int:course_id>comments/<int:comment_id>')
     # ratings
-    api.add_resource(Rating, '/courses/<int:course_id>/ratings/<int:rating_id>')
-    api.add_resource(RatingList, '/courses/<int:course_id>/ratings')
+    api.add_resource(RatingList, '/v1/courses/<int:course_id>/ratings')
+    api.add_resource(Rating, '/v1/courses/<int:course_id>/ratings/<int:rating_id>')
+    # questions
+    api.add_resource(QuestionList, '/v1/quizzes/<int:quiz_id>/questions')
+    api.add_resource(Question, '/v1/quizzes/<int:quiz_id>/questions/<int:question_id>')
+    # answers
+    api.add_resource(AnswerList, '/v1/questions/<int:question_id>/answers')
+    api.add_resource(Answer, '/v1/questions/<int:question_id>/answers/<int:answer_id>')
+    # scores
+    api.add_resource(ScoreList, '/v1/quizzes/<int:quiz_id>/scores')
+    api.add_resource(Score, '/v1/quizzes/<int:quiz_id>/scores/<int:score_id>')
 
     return app

@@ -26,7 +26,7 @@ class Rating(Resource):
         try:
             rating.update(**data)
         except:
-            return {"message": "An error occured while updating Rating."}, 500
+            return {"message": "An error occurred while updating Rating."}, 500
 
         return rating.json(), 200
 
@@ -39,7 +39,7 @@ class Rating(Resource):
         try:
             rating.delete()
         except:
-            return {"message": "An error occured while deleting Rating."}, 500
+            return {"message": "An error occurred while deleting Rating."}, 500
 
         return {"message": "Rating deleted."}, 200
 
@@ -67,6 +67,6 @@ class RatingList(Resource):
         try:
             rating.save()
         except:
-            return {"message": "An error occured while inserting Rating."}, 500
+            return {"message": "An error occurred while inserting Rating."}, 500
 
         return rating.json(), 201

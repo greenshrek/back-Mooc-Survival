@@ -35,10 +35,8 @@ class QuizModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['title']:
-            self.title = kwargs['title']
-        if kwargs['number']:
-            self.number = kwargs['number']
+        self.title = kwargs['title']
+        self.number = kwargs['number']
         self.updated_at = datetime.now()
         db.session.commit()
 

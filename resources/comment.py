@@ -27,7 +27,7 @@ class Comment(Resource):
         try:
             comment.update(**data)
         except:
-            return {"message": "An error occured while updating Comment."}, 500
+            return {"message": "An error occurred while updating Comment."}, 500
 
         return comment.json(), 200
 
@@ -40,7 +40,7 @@ class Comment(Resource):
         try:
             comment.delete()
         except:
-            return {"message": "An error occured while deleting Comment."}, 500
+            return {"message": "An error occurred while deleting Comment."}, 500
 
         return {"message": "Comment deleted."}, 200
 
@@ -71,6 +71,6 @@ class CommentList(Resource):
         try:
             comment.save()
         except:
-            return {"message": "An error occured while inserting Comment."}, 500
+            return {"message": "An error occurred while inserting Comment."}, 500
 
         return comment.json(), 201

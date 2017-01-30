@@ -61,12 +61,9 @@ class CourseModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['title']:
-            self.title = kwargs['title']
-        if kwargs['content']:
-            self.content = kwargs['content']
-        if kwargs['picture']:
-            self.picture = kwargs['picture']
+        self.title = kwargs['title']
+        self.content = kwargs['content']
+        self.picture = kwargs['picture']
         self.updated_at = datetime.utcnow()
         db.session.commit()
 
@@ -91,7 +88,8 @@ class CourseModel(db.Model):
             },
             "comments": [comment.json() for comment in self.comments],
             "students": [student.json() for student in self.students],
-            "chapters": [chapter.json() for chapter in self.chapters]
+            "chapters": [chapter.json() for chapter in self.chapters],
+            "quizzes": [quiz.json() for quiz in self.quizzes]
         }
 
 
