@@ -58,7 +58,7 @@ class CategoryList(Resource):
 
     def get(self):
         categories = CategoryModel.query.all()
-        return {"categories": [category.json() for category in categories]}
+        return [category.json() for category in categories]
 
     def post(self):
         data = self.parser.parse_args()
