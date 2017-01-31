@@ -89,7 +89,8 @@ class CourseModel(db.Model):
             "comments": [comment.json() for comment in self.comments],
             "students": [student.json() for student in self.students],
             "chapters": [chapter.json() for chapter in self.chapters],
-            "quizzes": [quiz.json() for quiz in self.quizzes]
+            "quizzes": [quiz.json() for quiz in self.quizzes],
+            "steps": [step.json() for step in self.steps]
         }
 
 
