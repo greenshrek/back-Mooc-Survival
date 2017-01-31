@@ -16,6 +16,7 @@ from resources.answer import AnswerList, Answer
 from resources.score import ScoreList, Score
 from resources.badge import BadgeList, Badge
 from resources.rating import RatingList, Rating
+from resources.step import Step
 
 def create_app():
     app = Flask(__name__)
@@ -62,5 +63,7 @@ def create_app():
     # scores
     api.add_resource(ScoreList, '/v1/quizzes/<int:quiz_id>/scores')
     api.add_resource(Score, '/v1/quizzes/<int:quiz_id>/scores/<int:score_id>')
+    # steps
+    api.add_resource(Step, '/v1/users/<int:student_id>/courses/<int:course_id>/steps/<int:step_id>')
 
     return app
