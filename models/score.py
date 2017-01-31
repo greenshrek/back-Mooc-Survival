@@ -47,10 +47,8 @@ class ScoreModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['score']:
-            self.score = kwargs['score']
-        if kwargs['max_score']:
-            self.max_score = kwargs['max_score']
+        self.score = kwargs['score']
+        self.max_score = kwargs['max_score']
         self.updated_at = datetime.now()
         db.session.commit()
 
@@ -78,3 +76,7 @@ class ScoreModel(db.Model):
     @classmethod
     def find_by_id(cls, score_id):
         return cls.query.filter_by(id=score_id).first()
+
+    @classmethod
+    def find_by_quiz(cls, quiz_id):
+        return cls.query.filter_by(quiz_id=quiz_id).all()

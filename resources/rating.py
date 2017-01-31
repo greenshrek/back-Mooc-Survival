@@ -1,11 +1,17 @@
 from flask_restful import Resource, reqparse
 from models.rating import RatingModel
 
+parser = reqparse.RequestParser()
+parser.add_argument('rate',
+                    type=int,
+                    required=True,
+                    help="A name must be provided.")
+parser.add_argument('author_id',
+                    type=int,
+                    required=True,
+                    help="A author_id must be provided.")
 
 class Rating(Resource):
-
-    parser = reqparse.RequestParser()
-    parser.add_argument('rate')
 
     def get(self, course_id, rating_id):
         rating = RatingModel.find_by_id(rating_id)
@@ -17,11 +23,18 @@ class Rating(Resource):
 
     def put(self, course_id, rating_id):
         data = self.parser.parse_args()
+        data['course_id'] = course_id
 
         rating = RatingModel.find_by_id(rating_id)
 
         if rating is None:
-            return {"message": "No rating found."}, 404
+            new_rating = RatingModel(**data)
+            try:
+                new_rating.save()
+
+                return new_rating.json(), 201
+            except:
+                return {"message": "An error occurred while updating Rating."}, 500
 
         try:
             rating.update(**data)
@@ -45,14 +58,6 @@ class Rating(Resource):
 
 
 class RatingList(Resource):
-
-    parser = reqparse.RequestParser()
-    parser.add_argument('rate',
-                        required=True,
-                        help="A name must be provided.")
-    parser.add_argument('author_id',
-                        required=True,
-                        help="A author_id must be provided.")
 
     def get(self, course_id):
         ratings = RatingModel.find_by_course(course_id)
