@@ -65,7 +65,7 @@ class AnswerList(Resource):
         if answers is None:
             return {"message": "No answers found for this quiz."}, 404
 
-        return {"answers": [answer.json() for answer in answers]}, 200
+        return [answer.json() for answer in answers], 200
 
     def post(self, question_id):
         data = parser.parse_args()

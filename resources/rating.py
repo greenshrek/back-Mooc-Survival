@@ -57,7 +57,7 @@ class RatingList(Resource):
     def get(self, course_id):
         ratings = RatingModel.find_by_course(course_id)
 
-        return {"ratings": [rating.json() for rating in ratings]}
+        return [rating.json() for rating in ratings], 200
 
     def post(self, course_id):
         data = self.parser.parse_args()

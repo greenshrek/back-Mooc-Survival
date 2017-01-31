@@ -58,7 +58,7 @@ class ScoreList(Resource):
     def get(self, quiz_id, student_id):
         scores = ScoreModel.query.all()
 
-        return {"scores": [score.json() for score in scores]}
+        return [score.json() for score in scores], 200
 
     def post(self, quiz_id, student_id):
         data = self.parser.parse_args()

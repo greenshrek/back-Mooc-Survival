@@ -68,7 +68,8 @@ class UserList(Resource):
 
     def get(self):
         users = UserModel.query.all()
-        return {"users": [user.json() for user in users]}
+        
+        return [user.json() for user in users], 200
 
     def post(self):
         data = parser.parse_args()

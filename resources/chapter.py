@@ -68,7 +68,7 @@ class ChapterList(Resource):
         if chapters is None:
             return {"message": "No chapters found for this course."}, 404
 
-        return {"chapters": [chapter.json() for chapter in chapters]}, 200
+        return [chapter.json() for chapter in chapters], 200
 
     def post(self, course_id):
         data = parser.parse_args()
