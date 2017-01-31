@@ -37,12 +37,9 @@ class ChapterModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['title']:
-            self.title = kwargs['title']
-        if kwargs['content']:
-            self.content = kwargs['content']
-        if kwargs['number']:
-            self.number = kwargs['number']
+        self.title = kwargs['title']
+        self.content = kwargs['content']
+        self.number = kwargs['number']
         self.updated_at = datetime.now()
         db.session.commit()
 

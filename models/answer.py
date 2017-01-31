@@ -35,10 +35,8 @@ class AnswerModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['answer']:
-            self.answer = kwargs['answer']
-        if kwargs['number']:
-            self.number = kwargs['number']
+        self.answer = kwargs['answer']
+        self.number = kwargs['number']
         self.updated_at = datetime.now()
         db.session.commit()
 

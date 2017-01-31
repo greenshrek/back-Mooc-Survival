@@ -27,7 +27,7 @@ class Score(Resource):
         try:
             score.update(**data)
         except:
-            return {"message": "An error occured while updating Score."}, 500
+            return {"message": "An error occurred while updating Score."}, 500
 
         return score.json(), 200
 
@@ -40,7 +40,7 @@ class Score(Resource):
         try:
             score.delete()
         except:
-            return {"message": "An error occured while deleting Score."}, 500
+            return {"message": "An error occurred while deleting Score."}, 500
 
         return {"message": "Score deleted."}, 200
 
@@ -69,6 +69,6 @@ class ScoreList(Resource):
         try:
             score.save()
         except:
-            return {"message": "An error occured while inserting Score."}, 500
+            return {"message": "An error occurred while inserting Score."}, 500
 
         return score.json(), 201

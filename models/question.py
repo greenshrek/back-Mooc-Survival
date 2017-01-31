@@ -37,12 +37,9 @@ class QuestionModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['question']:
-            self.question = kwargs['question']
-        if kwargs['number']:
-            self.number = kwargs['number']
-        if kwargs['good_answer']:
-            self.good_answer = kwargs['good_answer']
+        self.question = kwargs['question']
+        self.number = kwargs['number']
+        self.good_answer = kwargs['good_answer']
         self.updated_at = datetime.now()
         db.session.commit()
 

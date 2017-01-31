@@ -26,14 +26,10 @@ class CategoryModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['name']:
-            self.name = kwargs['name']
-        if kwargs['fr_label']:
-            self.fr_label = kwargs['fr_label']
-        if kwargs['en_label']:
-            self.en_label = kwargs['en_label']
-        if kwargs['picture']:
-            self.picture = kwargs['picture']
+        self.name = kwargs['name']
+        self.fr_label = kwargs['fr_label']
+        self.en_label = kwargs['en_label']
+        self.picture = kwargs['picture']
         self.updated_at = datetime.utcnow()
         db.session.commit()
 

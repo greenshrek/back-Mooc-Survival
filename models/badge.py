@@ -46,10 +46,8 @@ class BadgeModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['name']:
-            self.name = kwargs['name']
-        if kwargs['picture']:
-            self.picture = kwargs['picture']
+        self.name = kwargs['name']
+        self.picture = kwargs['picture']
         self.updated_at = datetime.now()
         db.session.commit()
 
@@ -73,7 +71,3 @@ class BadgeModel(db.Model):
     @classmethod
     def find_by_id(cls, badge_id):
         return cls.query.filter_by(id=badge_id).first()
-
-    @classmethod
-    def find_by_course(cls, course_id):
-        return cls.query.filter_by(course_id=course_id).all()

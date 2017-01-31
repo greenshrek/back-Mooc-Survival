@@ -68,16 +68,12 @@ class UserModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['username']:
-            self.username = kwargs['username']
-        if kwargs['email']:
-            self.email = kwargs['email']
-        if kwargs['firstname']:
-            self.firstname = kwargs['firstname']
-        if kwargs['lastname']:
-            self.lastname = kwargs['lastname']
-        if kwargs['picture']:
-            self.picture = kwargs['picture']
+        self.username = kwargs['username']
+        self.email = kwargs['email']
+        self.role = kwargs['role']
+        self.firstname = kwargs['firstname']
+        self.lastname = kwargs['lastname']
+        self.picture = kwargs['picture']
         self.updated_at = datetime.utcnow()
         db.session.commit()
 
