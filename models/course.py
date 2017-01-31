@@ -76,8 +76,8 @@ class CourseModel(db.Model):
             "id": self.id,
             "title": self.title,
             "content": self.content,
-            "created_at": self.created_at.strftime("%d/%m/%y - %H:%M:%S"),
-            "updated_at": self.updated_at.strftime("%d/%m/%y - %H:%M:%S"),
+            "created_at": self.created_at.strftime('%Y-%m-%dT%H:%M:%S'),
+            "updated_at": self.updated_at.strftime('%Y-%m-%dT%H:%M:%S'),
             "author": {
                 "id": self.author.id,
                 "username": self.author.username
