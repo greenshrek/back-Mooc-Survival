@@ -45,8 +45,7 @@ class RatingModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['rate']:
-            self.rate = kwargs['rate']
+        self.rate = kwargs['rate']
         self.updated_at = datetime.now()
         db.session.commit()
 

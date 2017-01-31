@@ -22,7 +22,7 @@ def create_app():
     from db import db
     db.init_app(app)
 
-    # TODO: check resources: comments, ratings, scores
+    # TODO: check resources: ratings, scores
     api = Api(app)
     # users
     api.add_resource(UserList, '/v1/users')
