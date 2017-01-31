@@ -1,4 +1,5 @@
 from flask_restful import Resource, reqparse
+from flask_jwt import jwt_required
 from models.user import UserModel
 
 parser = reqparse.RequestParser()
@@ -20,7 +21,8 @@ parser.add_argument('lastname')
 
 
 class User(Resource):
-
+    method_decorators = [jwt_required()]
+    
     def get(self, user_id):
         user = UserModel.find_by_id(user_id)
 
@@ -64,12 +66,7 @@ class User(Resource):
         return {"message": "User deleted."}, 200
 
 
-class UserList(Resource):
-
-    def get(self):
-        users = UserModel.query.all()
-        
-        return [user.json() for user in users], 200
+class UserRegister(Resource):
 
     def post(self):
         data = parser.parse_args()
