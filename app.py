@@ -2,9 +2,11 @@ import os
 
 from flask import Flask
 from flask_restful import Api, Resource
+from flask_jwt import JWT
+from security import authenticate, identity
 # import resources
 from resources.course import CourseList, Course
-from resources.user import UserList, User
+from resources.user import UserRegister, User
 from resources.category import CategoryList, Category
 from resources.comment import CommentList, Comment
 from resources.chapter import ChapterList, Chapter
@@ -24,8 +26,11 @@ def create_app():
 
     # TODO: check resources: ratings, scores
     api = Api(app)
+
+    jwt = JWT(app, authenticate, identity) # endpoint '/auth'
+
     # users
-    api.add_resource(UserList, '/v1/users')
+    api.add_resource(UserRegister, '/v1/register')
     api.add_resource(User, '/v1/users/<int:user_id>')
     # badges
     api.add_resource(BadgeList, '/v1/users/<int:student_id>/badges')

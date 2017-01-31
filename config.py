@@ -7,6 +7,7 @@ class Config(object):
     SECRET_KEY = 'my-super-secret-key'
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_AUTH_URL_RULE = '/v1/auth'
 
 
 class ProductionConfig(Config):

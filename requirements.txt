@@ -3,3 +3,4 @@ Flask-SQLAlchemy
 Flask-Script
 Flask-Migrate
 Flask-RESTful
+Flask-JWT
