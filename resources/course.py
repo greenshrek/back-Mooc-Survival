@@ -67,7 +67,8 @@ class CourseList(Resource):
 
     def get(self):
         courses = CourseModel.query.all()
-        return {"courses": [course.json() for course in courses]}
+        
+        return [course.json() for course in courses], 200
 
     def post(self):
         data = parser.parse_args()

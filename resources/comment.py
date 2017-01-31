@@ -62,7 +62,7 @@ class CommentList(Resource):
 
     def get(self):
         comments = CommentModel.query.all()
-        return {"comments": [comment.json() for comment in comments]}
+        return [comment.json() for comment in comments]
 
     def post(self):
         data = self.parser.parse_args()

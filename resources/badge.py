@@ -66,7 +66,7 @@ class BadgeList(Resource):
         student = UserModel.find_by_id(student_id)
         badges = [badge for badge in student.badges]
 
-        return {"badges": [badge.json() for badge in badges]}
+        return [badge.json() for badge in badges]
 
     def post(self, student_id):
         data = parser.parse_args()

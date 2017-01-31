@@ -69,7 +69,7 @@ class QuestionList(Resource):
         if questions is None:
             return {"message": "No questions found for this quiz."}, 404
 
-        return {"questions": [question.json() for question in questions]}, 200
+        return [question.json() for question in questions], 200
 
     def post(self, quiz_id):
         data = parser.parse_args()
