@@ -61,8 +61,8 @@ class ScoreModel(db.Model):
             "id": self.id,
             "score": self.score,
             "max_score": self.max_score,
-            "created_at": self.created_at.strftime("%d/%m/%y"),
-            "updated_at": self.updated_at.strftime("%d/%m/%y"),
+            "created_at": self.created_at.strftime('%Y-%m-%dT%H:%M:%S'),
+            "updated_at": self.updated_at.strftime('%Y-%m-%dT%H:%M:%S'),
             "quiz": {
                 "id": self.quiz.id,
                 "title": self.quiz.title

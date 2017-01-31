@@ -41,8 +41,8 @@ class CategoryModel(db.Model):
         return {
             "id": self.id,
             "category_name": self.name,
-            "created_at": self.created_at.strftime("%d/%m/%y"),
-            "updated_at": self.updated_at.strftime("%d/%m/%y"),
+            "created_at": self.created_at.strftime('%Y-%m-%dT%H:%M:%S'),
+            "updated_at": self.updated_at.strftime('%Y-%m-%dT%H:%M:%S'),
             "french_label": self.fr_label,
             "english_label": self.en_label,
             "picture_url": self.picture,

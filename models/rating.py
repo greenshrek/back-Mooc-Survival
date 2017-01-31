@@ -57,8 +57,8 @@ class RatingModel(db.Model):
         return {
             "id": self.id,
             "rate": self.rate,
-            "created_at": self.created_at.strftime("%d/%m/%y"),
-            "updated_at": self.updated_at.strftime("%d/%m/%y"),
+            "created_at": self.created_at.strftime('%Y-%m-%dT%H:%M:%S'),
+            "updated_at": self.updated_at.strftime('%Y-%m-%dT%H:%M:%S'),
             "course": {
                 "id": self.course.id,
                 "title": self.course.title

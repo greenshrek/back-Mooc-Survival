@@ -49,8 +49,8 @@ class AnswerModel(db.Model):
             "id": self.id,
             "answer": self.answer,
             "number": self.number,
-            "created_at": self.created_at.strftime("%d/%m/%y"),
-            "updated_at": self.updated_at.strftime("%d/%m/%y"),
+            "created_at": self.created_at.strftime('%Y-%m-%dT%H:%M:%S'),
+            "updated_at": self.updated_at.strftime('%Y-%m-%dT%H:%M:%S'),
             "question": {
                 "id": self.question.id,
                 "question": self.question.question

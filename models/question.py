@@ -53,8 +53,8 @@ class QuestionModel(db.Model):
             "question": self.question,
             "number": self.number,
             "good_answer": self.good_answer,
-            "created_at": self.created_at.strftime("%d/%m/%y"),
-            "updated_at": self.updated_at.strftime("%d/%m/%y"),
+            "created_at": self.created_at.strftime('%Y-%m-%dT%H:%M:%S'),
+            "updated_at": self.updated_at.strftime('%Y-%m-%dT%H:%M:%S'),
             "quiz": {
                 "id": self.quiz.id,
                 "title": self.quiz.title
