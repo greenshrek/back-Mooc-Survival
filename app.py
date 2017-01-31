@@ -43,8 +43,8 @@ def create_app():
     api.add_resource(QuizList, '/v1/courses/<int:course_id>/quizzes')
     api.add_resource(Quiz, '/v1/courses/<int:course_id>/quizzes/<int:quiz_id>')
     # comments
-    api.add_resource(CommentList, '/v1/courses/<int:course_id>comments')
-    api.add_resource(Comment, '/v1/courses/<int:course_id>comments/<int:comment_id>')
+    api.add_resource(CommentList, '/v1/courses/<int:course_id>/comments')
+    api.add_resource(Comment, '/v1/courses/<int:course_id>/comments/<int:comment_id>')
     # ratings
     api.add_resource(RatingList, '/v1/courses/<int:course_id>/ratings')
     api.add_resource(Rating, '/v1/courses/<int:course_id>/ratings/<int:rating_id>')

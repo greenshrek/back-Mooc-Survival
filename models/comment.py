@@ -47,10 +47,8 @@ class CommentModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        if kwargs['title']:
-            self.title = kwargs['title']
-        if kwargs['content']:
-            self.content = kwargs['content']
+        self.title = kwargs['title']
+        self.content = kwargs['content']
         self.updated_at = datetime.now()
         db.session.commit()
 
@@ -78,3 +76,7 @@ class CommentModel(db.Model):
     @classmethod
     def find_by_id(cls, comment_id):
         return cls.query.filter_by(id=comment_id).first()
+
+    @classmethod
+    def find_by_course(cls, course_id):
+        return cls.query.filter_by(course_id=course_id).all()
