@@ -22,19 +22,19 @@ parser.add_argument('lastname')
 
 class User(Resource):
     method_decorators = [jwt_required()]
-    
-    def get(self, user_id):
-        user = UserModel.find_by_id(user_id)
+
+    def get(self, username):
+        user = UserModel.find_by_username(username)
 
         if user is None:
             return {"message": "User not found."}, 404
 
         return user.json(), 201
 
-    def put(self, user_id):
+    def put(self, username):
         data = parser.parse_args()
 
-        user = UserModel.find_by_id(user_id)
+        user = UserModel.find_by_username(username)
 
         if user is None:
             new_user = UserModel(**data)
@@ -52,8 +52,8 @@ class User(Resource):
 
         return user.json(), 200
 
-    def delete(self, user_id):
-        user = UserModel.find_by_id(user_id)
+    def delete(self, username):
+        user = UserModel.find_by_username(username)
 
         if user is None:
             return {"message": "User not found."}, 404

@@ -32,7 +32,7 @@ def create_app():
 
     # users
     api.add_resource(UserRegister, '/v1/register')
-    api.add_resource(User, '/v1/users/<int:user_id>')
+    api.add_resource(User, '/v1/users/<string:username>')
     # badges
     api.add_resource(BadgeList, '/v1/users/<int:student_id>/badges')
     api.add_resource(Badge, '/v1/users/<int:student_id>/badges/<int:badge_id>')
