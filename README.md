@@ -31,3 +31,14 @@ python manage.py db upgrade
 ``` shell
 python manage.py runserver
 ```
+
+## Reset database
+``` shell
+rm database.db moocsurvivor.db
+rm -rf migrations/
+export DATABASE_URL="sqlite:///moocsurvivor.db"
+python manage.py db init
+python manage.py db migrate
+python manage.py db upgrade
+python manage.py runserver
+```
