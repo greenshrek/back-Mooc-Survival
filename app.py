@@ -6,7 +6,7 @@ from flask_jwt import JWT
 from security import authenticate, identity
 # import resources
 from resources.course import CourseList, Course
-from resources.user import UserRegister, User
+from resources.user import UserRegister, User, UserId
 from resources.category import CategoryList, Category
 from resources.comment import CommentList, Comment
 from resources.chapter import ChapterList, Chapter
@@ -33,6 +33,7 @@ def create_app():
     # users
     api.add_resource(UserRegister, '/v1/register')
     api.add_resource(User, '/v1/users/<string:username>')
+    api.add_resource(UserId, '/v1/users/<int:user_id>')
     # badges
     api.add_resource(BadgeList, '/v1/users/<int:student_id>/badges')
     api.add_resource(Badge, '/v1/users/<int:student_id>/badges/<int:badge_id>')

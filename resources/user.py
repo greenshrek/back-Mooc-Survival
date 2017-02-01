@@ -20,6 +20,17 @@ parser.add_argument('firstname')
 parser.add_argument('lastname')
 
 
+class UserId(Resource):
+    @jwt_required()
+    def get(self, user_id):
+        user = UserModel.find_by_id(user_id)
+
+        if user is None:
+            return {"message": "User not found."}, 404
+
+        return user.json(), 200
+
+
 class User(Resource):
     method_decorators = [jwt_required()]
 
