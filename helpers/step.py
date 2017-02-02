@@ -1,3 +1,4 @@
+from db import db
 from models.course import CourseModel
 
 def steps_count(course_id):
