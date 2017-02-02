@@ -9,6 +9,7 @@ class StepModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     current_step = db.Column(db.Integer)
+    final_step = db.Column(db.Integer)
     created_at = db.Column(db.DateTime())
     updated_at = db.Column(db.DateTime())
 
@@ -23,8 +24,9 @@ class StepModel(db.Model):
                            lazy='dynamic')
     )
 
-    def __init__(self, current_step, student_id, course_id):
+    def __init__(self, current_step, final_step, student_id, course_id):
         self.current_step = current_step
+        self.final_step = final_step
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
         self.add_student(student_id)
@@ -55,6 +57,7 @@ class StepModel(db.Model):
         return {
             "id": self.id,
             "current_step": self.current_step,
+            "final_step": self.final_step,
             "student": {
                 "id": self.student.id,
                 "username": self.student.username

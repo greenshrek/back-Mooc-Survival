@@ -55,7 +55,8 @@ class QuizModel(db.Model):
                 "id": self.course.id,
                 "title": self.course.title
             },
-            "questions": [question.json() for question in self.questions]
+            "questions": [question.json() for question in self.questions],
+            "scores": [score.json() for score in self.scores]
         }
 
     @classmethod

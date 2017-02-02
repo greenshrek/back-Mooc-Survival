@@ -3,9 +3,15 @@ from models.score import ScoreModel
 
 parser = reqparse.RequestParser()
 parser.add_argument('score',
+                    type=int,
                     required=True,
                     help="A score must be provided.")
 parser.add_argument('max_score',
+                    type=int,
+                    required=True,
+                    help="A max_score must be provided.")
+parser.add_argument('student_id',
+                    type=int,
                     required=True,
                     help="A max_score must be provided.")
 

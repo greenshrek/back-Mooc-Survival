@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.quiz import QuizModel
+from helpers.step import update_steps_number
 
 parser = reqparse.RequestParser()
 parser.add_argument('title',
@@ -53,6 +54,8 @@ class Quiz(Resource):
         except:
             return {"message": "An error occurred while deleting Quiz."}, 500
 
+        update_steps_number(course_id)
+
         return {"message": "Quiz deleted."}, 200
 
 
@@ -75,5 +78,7 @@ class QuizList(Resource):
             quiz.save()
         except:
             return {"message": "An error occurred while inserting Quiz."}, 500
+
+        update_steps_number(course_id)
 
         return quiz.json(), 201
