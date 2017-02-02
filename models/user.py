@@ -90,7 +90,8 @@ class UserModel(db.Model):
             "email": self.email,
             "picture_url": self.picture,
             "roles": [role.json() for role in self.roles],
-            "badges": [badge.json() for badge in self.badges]
+            "badges": [badge.json() for badge in self.badges],
+            "enrolled_courses": [course.json_light() for course in self.enrolled_courses]
         }
 
     @classmethod

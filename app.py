@@ -5,7 +5,7 @@ from flask_restful import Api, Resource
 from flask_jwt import JWT
 from security import authenticate, identity
 # import resources
-from resources.course import CourseList, Course
+from resources.course import CourseList, Course, CourseRegister
 from resources.user import UserRegister, User, UserId
 from resources.category import CategoryList, Category
 from resources.comment import CommentList, Comment
@@ -25,7 +25,7 @@ def create_app():
     from db import db
     db.init_app(app)
 
-    # TODO: check resources: ratings, scores
+    # TODO: upload image
     api = Api(app)
 
     jwt = JWT(app, authenticate, identity) # endpoint '/auth'
@@ -43,6 +43,7 @@ def create_app():
     # courses
     api.add_resource(CourseList, '/v1/courses')
     api.add_resource(Course, '/v1/courses/<int:course_id>')
+    api.add_resource(CourseRegister, '/v1/courses/<int:course_id>/users/<int:student_id>/register')
     # chapters
     api.add_resource(ChapterList, '/v1/courses/<int:course_id>/chapters')
     api.add_resource(Chapter, '/v1/courses/<int:course_id>/chapters/<int:chapter_id>')

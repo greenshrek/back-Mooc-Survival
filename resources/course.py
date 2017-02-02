@@ -67,7 +67,7 @@ class CourseList(Resource):
 
     def get(self):
         courses = CourseModel.query.all()
-        
+
         return [course.json() for course in courses], 200
 
     def post(self):
@@ -85,3 +85,12 @@ class CourseList(Resource):
             return {"message": "An error occurred while inserting Course"}, 500
 
         return course.json(), 201
+
+
+class CourseRegister(Resource):
+
+    def post(self, course_id, student_id):
+        course = CourseModel.find_by_id(course_id)
+        course.register_student(student_id)
+
+        return course.json(), 200

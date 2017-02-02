@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.chapter import ChapterModel
+from helpers.step import update_steps_number
 
 parser = reqparse.RequestParser()
 parser.add_argument('title',
@@ -57,6 +58,8 @@ class Chapter(Resource):
         except:
             return {"message": "An error occurred while deleting Chapter."}, 500
 
+        update_steps_number(course_id)
+
         return {"message": "Chapter deleted."}, 200
 
 
@@ -79,5 +82,7 @@ class ChapterList(Resource):
             chapter.save()
         except:
             return {"message": "An error occurred while inserting Chapter."}, 500
+
+        update_steps_number(course_id)
 
         return chapter.json(), 201

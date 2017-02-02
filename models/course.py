@@ -55,6 +55,7 @@ class CourseModel(db.Model):
     def register_student(self, student_id):
         student = UserModel.query.filter_by(id=student_id).first()
         self.students.append(student)
+        db.session.commit()
 
     def save(self):
         db.session.add(self)
@@ -91,6 +92,23 @@ class CourseModel(db.Model):
             "chapters": [chapter.json() for chapter in self.chapters],
             "quizzes": [quiz.json() for quiz in self.quizzes],
             "steps": [step.json() for step in self.steps]
+        }
+
+    def json_light(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "content": self.content,
+            "created_at": self.created_at.strftime('%Y-%m-%dT%H:%M:%S'),
+            "updated_at": self.updated_at.strftime('%Y-%m-%dT%H:%M:%S'),
+            "author": {
+                "id": self.author.id,
+                "username": self.author.username
+            },
+            "category": {
+                "id": self.category.id,
+                "name": self.category.name
+            }
         }
 
 
